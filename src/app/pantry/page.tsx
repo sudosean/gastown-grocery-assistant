@@ -1,38 +1,28 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-
-const SAMPLE_CATEGORIES = [
-  'Produce',
-  'Dairy & Eggs',
-  'Meat & Seafood',
-  'Grains & Pasta',
-  'Canned & Jarred',
-  'Frozen',
-  'Spices & Condiments',
-  'Other',
-]
+import { PantryClient } from '@/components/pantry/PantryClient'
 
 export default async function PantryPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
+  let items = []
+  if (user) {
+    const { data } = await supabase
+      .from('pantry_items')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('category', { ascending: true })
+      .order('name', { ascending: true })
+    items = data ?? []
+  }
+
   return (
     <div className="pb-20 md:pb-0 md:pl-56">
       <div className="py-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Pantry</h1>
-            <p className="text-gray-500 text-sm mt-1">What you have on hand</p>
-          </div>
-          {user ? (
-            <button className="btn-primary text-sm">
-              + Add item
-            </button>
-          ) : (
-            <Link href="/auth/login" className="btn-secondary text-sm">
-              Sign in
-            </Link>
-          )}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Pantry</h1>
+          <p className="text-gray-500 text-sm mt-1">What you have on hand</p>
         </div>
 
         {!user ? (
@@ -47,14 +37,7 @@ export default async function PantryPage() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
-            {SAMPLE_CATEGORIES.map((category) => (
-              <div key={category} className="card">
-                <h3 className="font-medium text-gray-700 mb-2 text-sm">{category}</h3>
-                <p className="text-xs text-gray-400 italic">No items</p>
-              </div>
-            ))}
-          </div>
+          <PantryClient initialItems={items} />
         )}
       </div>
     </div>
