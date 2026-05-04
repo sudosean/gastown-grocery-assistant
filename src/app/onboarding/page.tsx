@@ -3,6 +3,8 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard'
 
+export const dynamic = 'force-dynamic'
+
 export default async function OnboardingPage() {
   const supabase = createServerComponentClient({ cookies })
   const { data: { user } } = await supabase.auth.getUser()

@@ -4,6 +4,8 @@ import { cookies } from 'next/headers'
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard'
 import type { HouseholdProfile } from '@/types/household'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProfilePage() {
   const supabase = createServerComponentClient({ cookies })
   const { data: { user } } = await supabase.auth.getUser()
