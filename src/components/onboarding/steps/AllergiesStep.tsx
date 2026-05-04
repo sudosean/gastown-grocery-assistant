@@ -85,7 +85,7 @@ export default function AllergiesStep({ form, update }: Props) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-1">Allergies & intolerances</h2>
-      <p className="text-sm text-gray-500 mb-5">We'll never suggest recipes containing these ingredients.</p>
+      <p className="text-sm text-gray-500 mb-5">We&apos;ll never suggest recipes containing these ingredients.</p>
       <ToggleGroup
         label="Allergies (avoid completely)"
         options={COMMON_ALLERGIES}

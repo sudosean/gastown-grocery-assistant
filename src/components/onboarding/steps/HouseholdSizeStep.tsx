@@ -51,7 +51,7 @@ export default function HouseholdSizeStep({ form, update }: Props) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-1">Who are you cooking for?</h2>
-      <p className="text-sm text-gray-500 mb-6">We'll size portions and plan budgets accordingly.</p>
+      <p className="text-sm text-gray-500 mb-6">We&apos;ll size portions and plan budgets accordingly.</p>
       <Counter
         label="Adults"
         value={form.num_adults}

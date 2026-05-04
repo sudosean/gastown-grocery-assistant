@@ -23,7 +23,7 @@ export default function DietaryPreferencesStep({ form, update }: Props) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-1">Dietary preferences</h2>
-      <p className="text-sm text-gray-500 mb-6">Select all that apply. We'll filter recipes accordingly.</p>
+      <p className="text-sm text-gray-500 mb-6">Select all that apply. We&apos;ll filter recipes accordingly.</p>
       <div className="flex flex-wrap gap-2">
         {DIETARY_PREFERENCES.map(({ value, label }) => {
           const selected = form.dietary_preferences.includes(value)

@@ -15,7 +15,7 @@ export default function BudgetStep({ form, update }: Props) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-1">Weekly grocery budget</h2>
-      <p className="text-sm text-gray-500 mb-6">We'll suggest recipes and quantities that fit your budget.</p>
+      <p className="text-sm text-gray-500 mb-6">We&apos;ll suggest recipes and quantities that fit your budget.</p>
       <div className="grid grid-cols-2 gap-3">
         {BUDGET_OPTIONS.map(({ value, label }) => {
           const selected = form.weekly_budget_cents === value

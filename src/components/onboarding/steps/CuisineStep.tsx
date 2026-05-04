@@ -22,7 +22,7 @@ export default function CuisineStep({ form, update }: Props) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-1">Favorite cuisines</h2>
-      <p className="text-sm text-gray-500 mb-6">We'll prioritize these when building your meal plans.</p>
+      <p className="text-sm text-gray-500 mb-6">We&apos;ll prioritize these when building your meal plans.</p>
       <div className="grid grid-cols-3 gap-2">
         {CUISINE_TYPES.map(cuisine => {
           const selected = form.preferred_cuisines.includes(cuisine)
