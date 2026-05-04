@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+
+export const dynamic = 'force-dynamic'
 import { cookies } from 'next/headers'
 import Anthropic from '@anthropic-ai/sdk'
 import { buildPreferenceContext, buildPreferencePromptFragment } from '@/lib/meal-preferences'
