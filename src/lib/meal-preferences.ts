@@ -34,11 +34,11 @@ export function buildPreferenceContext(rejections: MealRejection[]): MealPrefere
   }
 
   // Only surface tags rejected 2+ times to avoid over-filtering from one bad day
-  const rejectedCuisineTags = [...cuisineTagCounts.entries()]
+  const rejectedCuisineTags = Array.from(cuisineTagCounts.entries())
     .filter(([, count]) => count >= 2)
     .map(([tag]) => tag)
 
-  const rejectedIngredientTags = [...ingredientTagCounts.entries()]
+  const rejectedIngredientTags = Array.from(ingredientTagCounts.entries())
     .filter(([, count]) => count >= 2)
     .map(([tag]) => tag)
 
