@@ -18,7 +18,7 @@ export async function getMealRejections(): Promise<MealRejection[]> {
 }
 
 export function buildPreferenceContext(rejections: MealRejection[]): MealPreferenceContext {
-  const rejectedMealNames = [...new Set(rejections.map(r => r.meal_name))]
+  const rejectedMealNames = Array.from(new Set(rejections.map(r => r.meal_name)))
 
   // Weight tags by frequency — tags appearing in multiple rejections signal stronger aversion
   const cuisineTagCounts = new Map<string, number>()
@@ -42,7 +42,7 @@ export function buildPreferenceContext(rejections: MealRejection[]): MealPrefere
     .filter(([, count]) => count >= 2)
     .map(([tag]) => tag)
 
-  const rejectionReasons = [...new Set(rejections.map(r => r.rejection_reason))] as MealRejectionReason[]
+  const rejectionReasons = Array.from(new Set(rejections.map(r => r.rejection_reason))) as MealRejectionReason[]
 
   return {
     rejected_meal_names: rejectedMealNames,
