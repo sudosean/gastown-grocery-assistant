@@ -34,6 +34,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
 # gas town runtime
 .beads/
 .runtime/
