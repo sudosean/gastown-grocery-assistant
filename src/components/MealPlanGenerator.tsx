@@ -55,6 +55,7 @@ export default function MealPlanGenerator() {
       }
 
       const plan: WeeklyMealPlan = await res.json()
+      localStorage.setItem('mealPlan', JSON.stringify(plan))
       setMealPlan(plan)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
