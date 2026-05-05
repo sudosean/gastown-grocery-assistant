@@ -54,4 +54,4 @@ clean: ## Stop all services and remove volumes
 	docker compose down -v
 
 seed: ## Run seed script to populate dev data
-	docker compose exec api python scripts/seed.py
+	docker compose exec api python seed.py

@@ -33,6 +33,8 @@ make up
 
 Open [http://localhost:3000](http://localhost:3000).
 
+After `make up`, run `make seed` to create a dev account (`dev@example.com` / `password`).
+
 ## Makefile Reference
 
 | Target | Description |
