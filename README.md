@@ -8,99 +8,115 @@ An AI-powered meal planning and grocery management app. Set your household prefe
 - **Meal Swaps** — Swap individual meals and the app learns your preferences over time
 - **Pantry Tracking** — Add items via natural language (AI parses them into structured entries)
 - **Smart Shopping Lists** — Auto-generated from your meal plan, with pantry items already subtracted
-- **Authentication** — Supabase Auth with per-user data isolation via Row Level Security
+
+## Tech Stack
+
+- [Vite](https://vitejs.dev/) + [React](https://react.dev/) + TypeScript (frontend)
+- [FastAPI](https://fastapi.tiangolo.com/) (Python backend)
+- [PostgreSQL](https://www.postgresql.org/) (database)
+- [Docker Compose](https://docs.docker.com/compose/) (local dev stack)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Anthropic Claude](https://www.anthropic.com/) (meal plan generation, pantry parsing)
 
 ## Prerequisites
 
-- Node.js 18+
-- [Supabase CLI](https://supabase.com/docs/guides/cli) (`npm install -g supabase`)
-- An [Anthropic API key](https://console.anthropic.com/)
-- A Supabase project (local or cloud)
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Environment Variables
+That's it. No local Node or Python installation required to run the app.
 
-Copy `.env.local.example` to `.env.local` and fill in the values:
+## Quickstart
 
 ```bash
-cp .env.local.example .env.local
-```
-
-```env
-# Supabase — find these in your project dashboard under Settings > API
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-
-# Anthropic — https://console.anthropic.com/
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-## Local Development
-
-### 1. Install dependencies
-
-```bash
-npm install
-```
-
-### 2. Start Supabase locally
-
-```bash
-supabase start
-```
-
-This starts a local Postgres + Auth + Studio stack. The CLI prints your local `SUPABASE_URL` and `ANON_KEY` — copy those into `.env.local`.
-
-### 3. Apply the database schema
-
-```bash
-supabase db push
-```
-
-Or apply manually:
-
-```bash
-psql "$(supabase status | grep 'DB URL' | awk '{print $3}')" -f supabase/schema.sql
-```
-
-### 4. Start the dev server
-
-```bash
-npm run dev
+cp .env.example .env
+make up
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Lint & Format
+## Makefile Reference
+
+| Target | Description |
+|--------|-------------|
+| `make up` | Start all services in detached mode |
+| `make down` | Stop all services |
+| `make dev` | Start all services and follow logs |
+| `make build` | Build all service images |
+| `make logs` | Follow logs for all services |
+| `make ps` | Show service status |
+| `make migrate` | Run alembic upgrade head inside api container |
+| `make migrate-new msg='...'` | Create a new alembic migration |
+| `make db-shell` | Open psql shell into postgres container |
+| `make api-shell` | Open bash shell into api container |
+| `make frontend-shell` | Open bash shell into frontend container |
+| `make install` | Install dependencies (frontend npm, backend pip) |
+| `make lint` | Run eslint (frontend) and ruff (backend) |
+| `make test` | Run pytest (backend) and vitest (frontend) |
+| `make clean` | Stop all services and remove volumes |
+| `make seed` | Populate dev data via seed script |
+
+## Local Development (without Docker)
+
+For contributors who want hot-reload without containers:
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+**Backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+You'll also need a local PostgreSQL instance. Set `DATABASE_URL` in `backend/.env` to point to it.
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and edit as needed:
 
 ```bash
-npm run lint      # ESLint via next lint
-npm run format    # Prettier (writes in place)
+cp .env.example .env
 ```
+
+| Variable | Description |
+|----------|-------------|
+| `POSTGRES_USER` | PostgreSQL username (default: `grocery`) |
+| `POSTGRES_PASSWORD` | PostgreSQL password (default: `grocery`) |
+| `POSTGRES_DB` | PostgreSQL database name (default: `grocery`) |
+| `DATABASE_URL` | Full connection string used by the API container |
+| `SECRET_KEY` | Secret key for JWT signing — change in production |
+| `ANTHROPIC_API_KEY` | Your Anthropic API key from [console.anthropic.com](https://console.anthropic.com/) |
+| `ALLOWED_ORIGINS` | CORS allowed origins (default: `http://localhost:3000`) |
+| `VITE_API_URL` | API base URL used by the frontend (default: `http://localhost:8000`) |
 
 ## Project Structure
 
 ```
-src/
+frontend/         # Vite + React + TypeScript app
+  src/
+    components/   # Shared React components
+    pages/        # Route-level page components
+    lib/          # API client, utilities
+    types/        # TypeScript types
+  package.json
+
+backend/          # FastAPI Python app
   app/
-    api/          # Route handlers (meal-plan, pantry, grocery-list, meals)
-    auth/         # Login page + Supabase callback
-    onboarding/   # First-run profile setup
-    pantry/       # Pantry management UI
-    plan/         # Weekly meal plan UI
-    shopping/     # Shopping list UI
-    profile/      # User preferences
-  components/     # Shared React components
-  lib/supabase/   # Browser and server Supabase clients
-  types/          # TypeScript types
-supabase/
-  schema.sql      # Database schema (profiles, meal_plans, pantry_items, etc.)
-  migrations/     # Schema migrations
+    routers/      # API route handlers
+    models.py     # SQLAlchemy ORM models
+    schemas.py    # Pydantic request/response schemas
+    database.py   # DB session setup
+    auth.py       # Authentication helpers
+    main.py       # FastAPI app entrypoint
+  migrations/     # Alembic migrations
+  requirements.txt
+  Dockerfile
+
+docker-compose.yml  # Defines frontend, api, and db services
+Makefile            # Dev workflow shortcuts
+.env.example        # Environment variable template
 ```
-
-## Tech Stack
-
-- [Next.js 14](https://nextjs.org/) (App Router)
-- [Supabase](https://supabase.com/) (Postgres, Auth, RLS)
-- [Anthropic Claude](https://www.anthropic.com/) (meal plan generation, pantry parsing)
-- [Tailwind CSS](https://tailwindcss.com/)
-- TypeScript
