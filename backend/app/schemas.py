@@ -14,9 +14,15 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class UserOut(BaseModel):
+    id: str
+    email: str
+
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    user: UserOut
 
 
 # Profile
